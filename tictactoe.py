@@ -2,9 +2,9 @@
 Krustiņi un nullītes.
 """
 
-import random
+import random  # piesaista random bibliotēku, kas vēlāk būs vajadzīga
 
-laukums = [
+laukums = [  # definē sarakstu spēles laukuma reprezentācijai
     [1, 2, 3],
     [4, 5, 6],
     [7, 8, 9]
@@ -22,12 +22,12 @@ Paraugs:
 [ ][ ][X]
 """
 def ziimeeLaukumu():
-    for rinda in laukums:
-        for elements in rinda:
-            if elements in ["X", "0"]:
-                print(f"[{elements}]", end="")
+    for rinda in laukums:  # caurskata rindas sarakstā (kopā 3)
+        for elements in rinda:  # caurskata elementus rindā (katrā pa 3)
+            if elements in ["X", "0"]:  # ja attiecīgajā pozīcijā glabājas X vai 0
+                print(f"[{elements}]", end="")  # drukā simbolu, NEpārceļot jaunā rindā, jo end=""
             else:
-                print(f"[ ]", end="")
+                print(f"[ ]", end="")  # ja nav X vai 0, tad drukā tukšas kvadrātiekavas
         print("")
 
 
@@ -38,24 +38,24 @@ Izdrukā pašreizējo spēles laukumu un pārbauda, vai nav fiksēta uzvara/neiz
 Ja spēle nav galā, tā turpinās ar nākamo gājienu.
 """
 def gajiens(speletajs):
-    global laukums
+    global laukums  # pārdefinē globālu mainīgo funkcijā, lai to var pārrakstīt (mainīt)
 
-    mans_gajiens = int(input("Tavs gājiens: "))
-    for i in range(len(laukums)):
-        for j in range(len(laukums[i])):
-            if laukums[i][j] == mans_gajiens:
-                laukums[i][j] = speletajs
+    mans_gajiens = int(input("Tavs gājiens: "))  # prasa ievadīt skaitli
+    for i in range(len(laukums)):  # caurskata saraksta indeksus 0 - 2
+        for j in range(len(laukums[i])):  # caurskata attiecīgās rindas indeksus
+            if laukums[i][j] == mans_gajiens:  # salīdzina, vai elements ar indeksiem [i][j] ir vienāds ar ievadīto skaitli
+                laukums[i][j] = speletajs  # saglabā attiecīgajā pozīcijā X vai 0, atkarībā no gājienu izdarošā spēlētāja
 
-    ziimeeLaukumu()
+    ziimeeLaukumu()  # izsauc funkciju, kas uzzīmē konsolē spēles laukumu
 
-    iznakums = parbaudaUzvaru()
-    if iznakums != False:
-        spelesBeigas(iznakums)
+    iznakums = parbaudaUzvaru()  # izsauc funkciju, kas pārbauda, vai nav fiksēta uzvara
+    if iznakums != False:  # ja neatgriež False
+        spelesBeigas(iznakums)  # tad izsauc f-ju spelesBeigas, padodot parametru iznakums (True vai False vai "neizšķirts")
     else:
-        if speletajs == "X":
-            gajiens("0")
-        else:
-            gajiens("X")
+        if speletajs == "X":  # jā gājienu izdarīja X
+            gajiens("0")  # pārslēdz uz 0
+        else:  # ja gājienu izdarīja O
+            gajiens("X")  # pārslēdz uz X
 
 
 """
@@ -63,14 +63,14 @@ Attīra laukumu no esošajām figūrām, sanumurē laukus.
 Spēle turpinās ar pirmo gājienu.
 """
 def jaunaSpele(speletajs):
-    global laukums
-    skaititajs = 1
-    for i in range(len(laukums)):
-        for j in range(len(laukums[i])):
-            laukums[i][j] = skaititajs
-            skaititajs += 1
+    global laukums  # pārdefinē globālu mainīgo funkcijā, lai to var pārrakstīt (mainīt)
+    skaititajs = 1  # skaitītājs lauciņu numurēšanai
+    for i in range(len(laukums)):  # caurskata saraksta indeksus
+        for j in range(len(laukums[i])):  # caurskata rindas indeksus
+            laukums[i][j] = skaititajs  # iestata skaitli attiecīgajā [i][j] pozīcijā
+            skaititajs += 1  # palielina skaitītāju
 
-    gajiens(speletajs)
+    gajiens(speletajs)  # pāriet uz jaunu gājienu
 
 
 """
@@ -81,27 +81,27 @@ TODO: Citādi atgriež False.
 """
 def parbaudaUzvaru():
     #horizontāles
-    for rinda in laukums:
-        if rinda[0] == rinda[1] == rinda[2]:
-            return True
+    for rinda in laukums:  # caurskata rindas sarakstā
+        if rinda[0] == rinda[1] == rinda[2]:  # salīdzina, vai elementi rindā ir vienādi
+            return True  # atgriež loģisko vērtību True (f-ja tālāk neizpildās)
 
     #vertikāles
-    for i in range(len(laukums[0])):
-        if laukums[0][i] == laukums[1][i] == laukums[2][i]:
-            return True
+    for i in range(len(laukums[0])):  # caurskata elementus 1. rindā
+        if laukums[0][i] == laukums[1][i] == laukums[2][i]:  # salīdzina elementus katrā kolonnā
+            return True  # atgriež loģisko vērtību True (f-ja tālāk neizpildās)
 
     #diagonāles
-    if laukums[0][0] == laukums[1][1] == laukums[2][2]:
-        return True
-    elif laukums[0][2] == laukums[1][1] == laukums[2][0]:
-        return True
+    if laukums[0][0] == laukums[1][1] == laukums[2][2]:  # salīdzina elementus pa diagonāli (\)
+        return True  # atgriež True (f-ja tālāk neizpildās)
+    elif laukums[0][2] == laukums[1][1] == laukums[2][0]:  # salīdzina elementus pa pretējo diagonāli (/)
+        return True  # atgriež True (f-ja tālāk neizpildās)
     else:
-        for rinda in laukums:
-            for elements in rinda:
-                if elements in range(1, 10):
-                    return False
+        for rinda in laukums:  # caurskata rindas sarakstā
+            for elements in rinda:  # caurskata elementus rindā
+                if elements in range(1, 10):  # ja elements ir skaitlis no 1 līdz 9
+                    return False  # atgriež loģisko vērtību False
         else:
-            return "neizšķirts"
+            return "neizšķirts"  # atgriež tekstuālu vērtību "neizšķirts"
 
 
 """
@@ -109,15 +109,16 @@ Izvada jautājumu par jaunas spēles sākumu.
 Ja atbild apstiprinoši, izsauc f-ju jaunaSpele(), padodot kā parametru uzvarētāju, kurš sāks spēli.
 """
 def spelesBeigas(uzvaretajs):
-    izvele = input("Vai vēlies spēlēt vēlreiz? (y/n")
-    if izvele == "y":
-        if uzvaretajs == "X":
-            jaunaSpele("X")
-        elif uzvaretajs == "0":
-            jaunaSpele("0")
+    izvele = input("Vai vēlies spēlēt vēlreiz? (y/n")  # prasa ievadīt y vai n
+    if izvele == "y":  # ja ievadīts y
+        if uzvaretajs == "X":  # ja uzvarējis X
+            jaunaSpele("X")  # jaunu spēli sāk X
+        elif uzvaretajs == "0":  # ja uzvarējis 0
+            jaunaSpele("0")  # jaunu spēli sāk 0
         else:
-            jaunaSpele(random.choice(["X", "0"]))
+            jaunaSpele(random.choice(["X", "0"]))  # jaunu spēli sāk nejauši izvēlēts spēlētājs
+        # ja neievada y, programmas izpilde neturpinās
 
 
 # Spēli sāk X
-jaunaSpele("X")
+jaunaSpele("X")  # startējot programmu, spēli sāk X
